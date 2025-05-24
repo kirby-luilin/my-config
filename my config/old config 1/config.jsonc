@@ -1,0 +1,318 @@
+{
+// ################################################################
+// ################################################################
+   "spacing": 0,
+    "layer": "bottom",
+	"position": "top",
+	"fixed-center": true,
+    "ipc": true,
+    "margin-top": 4,
+    "margin-left": 162,
+    "margin-right": 152,
+
+// ########################### left ###############################    
+// ################################################################
+
+    "modules-left": [
+    	"custom/menu",
+       "hyprland/workspaces",
+        "custom/Ses",
+       "temperature",
+         "custom/Ses",
+        "battery",
+        "custom/Ses",
+
+    ],
+// ########################## center ##############################
+// ################################################################
+
+    "modules-center": [
+       "clock#time",        
+       "group/menu",
+    ],
+// ########################## right ###############################
+// ################################################################
+
+    "modules-right": [
+        "group/audio",
+        "network",
+        "group/power",
+        "hyprland/language",
+	],
+// ######################### Modules ##############################
+// ################################################################
+
+	"temperature": {
+		"hwmon-path": [
+		"/sys/class/drm/card0/device/hwmon/hwmon1/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon2/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon3/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon4/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon5/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon6/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon7/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon8/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon9/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon10/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon11/temp1_input",
+		"/sys/class/drm/card0/device/hwmon/hwmon12/temp1_input",
+		"/sys/class/thermal/thermal_zone0/temp"
+	        ],
+		"critical-threshold": 82,
+		"interval": 5,
+		"format": "{icon} {temperatureC}°",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"tooltip": false
+	},
+
+    "group/menu": {
+    	"orientation": "inherit",
+        	"drawer": {
+		"transition-duration": 500,
+		"transition-left-to-right": true
+        },
+    	"modules": [
+    		"custom/swaync",
+    		"idle_inhibitor",
+    	]
+    },
+
+        "hyprland/language": {
+        "format": "{}",
+        "format-en": "EN",
+        "format-ar": "AR",
+    },
+
+	"custom/power": {
+		"format": " ⏻ ",
+		"on-click": "wlogout",
+		"tooltip": false	
+    },
+	// Modules
+	"custom/menu": {
+		"format": " 󰣇 ",
+		"on-click": "pkill rofi || rofi -show drun -modi run,drun,filebrowser,window",
+        "on-click-right":"hyprctl reload",
+        "on-click-middle":"kitty nvim /home/spacexd/.config/MangoHud/MangoHud.conf",
+        "tooltip-format": "left click: open app menu\nright click: reload\nmiddle click: open mangohud config",
+    },
+
+    "hyprland/window": {
+	"format": "{}",
+	"max-length": 50,
+	"separate-outputs": true,
+	"offscreen-css": true,
+	"offscreen-css-text": "(inactive)",
+	"rewrite": {
+		"(.*) — Mozilla Firefox": " $1",
+		"(.*) - fish": "> [$1]",
+		"(.*) - zsh": "> [$1]",
+		"(.*) - $term": "> [$1]",
+    	},
+    },
+
+    "idle_inhibitor": {
+	"tooltip": true,
+	"tooltip-format-activated": "Idle_inhibitor active",
+	"tooltip-format-deactivated": "Idle_inhibitor not active",
+	"format": "{icon}",
+	"format-icons": {
+		"activated": " ",
+		"deactivated": " ",
+	    }
+    },
+
+	"battery": {
+		"interval": 10,
+		"states": {
+			"warning": 30,
+			"critical": 15
+		},
+		"format-time": "{H}:{M:02}",
+		"format": "{icon} {capacity}%",
+		"format-charging": " {capacity}%",
+		"format-charging-full": " {capacity}%",
+		"format-full": "{icon} {capacity}%",
+		"format-alt": "{icon} {power}W",
+		"format-icons": [
+			" ",
+			" ",
+			" ",
+			" ",
+			" "
+		],
+		"tooltip": false,
+    },
+
+	"custom/swaync": {
+		"tooltip": false,
+		"format": " {} ",
+		"return-type": "json",
+		"exec-if": "which swaync-client",
+		"exec": "swaync-client -swb",
+		"on-click": "sleep 0.1 && swaync-client -t -sw",
+		"escape": true,
+	},
+
+	"clock#time": {
+	"interval": 61,
+    "format": "{:%I:%M%p | %a %d,%m,%Y}", // AM PM format
+	"tooltip-format": "<tt><small>{calendar}</small></tt>",
+	"on-click":"gnome-clocks",
+    "on-click-right":"GSK_RENDERER=ngl gnome-calendar",
+    },
+
+	"clock#date": {
+		"interval": 20,
+		"format": "  {:%e %b %Y}",
+		"tooltip": false
+		//"tooltip-format": "{:%e %B %Y}"
+	},
+
+	"cpu": {
+		"interval": 5,
+		"tooltip": false,
+		"format": "   {usage}%",
+		"format-alt": "   {load}",
+		"states": {
+			"warning": 70,
+			"critical": 90
+		}
+	},
+
+	"sway/language": {
+		"format": "    {}",
+		"min-length": 5,
+		"on-click": "swaymsg 'input * xkb_switch_layout next'",
+		"tooltip": false
+	},
+
+	"memory": {
+		"interval": 5,
+		"format": " {used:0.1f}G/{total:0.1f}G",
+		"states": {
+			"warning": 70,
+			"critical": 90
+		},
+		"tooltip": false
+	},
+
+	"network": {
+		"interval": 5,
+		"format-wifi": " ",
+		"format-ethernet": " {ifname}",
+		"format-disconnected": "No connection",
+		"format-alt": " {ipaddr}/{cidr}",
+		"tooltip": false
+	},
+
+	"sway/mode": {
+		"format": "{}",
+		"tooltip": false
+	},
+
+	"sway/window": {
+		"format": "{}",
+		"max-length": 30,
+		"tooltip": false
+	},
+
+	"hyprland/workspaces": {
+	"disable-scroll": true,
+	"show-special": false,
+	"all-outputs": true,
+	"format": "{icon}",
+    "persistent-workspaces": {
+      "*": 5
+	},
+	"format-icons": {
+		"1": "一",
+		"2": "二",
+		"3": "三",
+		"4": "四",
+		"5": "五",
+		"6": "六",
+		"7": "七",
+		"8": "八",
+		"9": "九",
+		"10": "十",
+	}
+    },
+
+    "pulseaudio": {
+    "format": "{icon}",
+    "format-bluetooth": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+        "headphone": " ",
+        "hands-free": " ",
+        "headset": " ",
+        "phone": " ",
+        "portable": " ",
+        "car": " ",
+        "default": [" ", " "]
+        },
+     "scroll-step": 5,
+     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+     "tooltip": false
+    },
+  // Microphone (input) control
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "format-source": " {volume}%",
+    "format-source-muted": " ",
+    "max-volume": 100,
+    "scroll-step": 5,
+    "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+    "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +5%",
+    "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%"
+  },
+
+
+	"tray": {
+		"icon-size": 18
+		//"spacing": 10
+  },
+
+    "custom/Ses": {
+		"format": "|",
+		"tooltip": false
+  },
+
+// ####################### Group Modules ###########################
+// #################################################################
+
+"group/audio": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "pulseaudio",
+		"transition-left-to-right": true
+        },
+	"modules": [
+		"pulseaudio",
+		"pulseaudio#microphone",
+	]
+  },
+
+"group/power": {
+	"orientation": "inherit",
+	"drawer": {
+		"transition-duration": 500,
+		"children-class": "power-tray",
+		"transition-left-to-right": false
+        },
+	"modules": [
+		"custom/power",
+		"tray",
+	]
+  },
+
+
+}
